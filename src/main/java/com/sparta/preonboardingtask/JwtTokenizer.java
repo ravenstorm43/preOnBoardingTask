@@ -70,7 +70,7 @@ public class JwtTokenizer {
         if (StringUtils.hasText(tokenValue) && tokenValue.startsWith(BEARER_PREFIX)) {
             return tokenValue.substring(7);
         }
-        throw new CustomException(ErrorCode.TOKEN_NOTFOUND);
+        throw new RuntimeException("유효하지 않은 토큰입니다.");
     }
 
     public boolean validateToken(String token) {
