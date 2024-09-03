@@ -26,7 +26,6 @@ public class JwtTokenizer {
     public static final String AUTHORIZATION_KEY = "admin";
     public static final String BEARER_PREFIX = "Bearer ";
     private final long ACCESSTOKEN_TIME = 60 * 30 * 1000L;
-    @Getter
     private final long REFRESHTOKEN_TIME = 60 * 60 * 1000L * 336;
 
     @Value("${JWT_SECRET_KEY}") // Base64 Encode 한 SecretKey

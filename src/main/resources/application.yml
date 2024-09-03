@@ -8,6 +8,8 @@ spring:
     password: password
   config:
     import: optional:application-secret.yml
+    activate:
+      on-profile: default
 
   h2:
     console:

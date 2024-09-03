@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,6 +26,13 @@ public class Users {
     @Column(nullable = false)
     private String nickname;
 
-
     private boolean admin;
+
+    @Builder
+    public Users(String username, String password, String nickname, boolean admin) {
+        this.username = username;
+        this.password = password;
+        this.nickname = nickname;
+        this.admin = admin;
+    }
 }
