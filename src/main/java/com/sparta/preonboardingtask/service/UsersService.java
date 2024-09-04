@@ -3,6 +3,7 @@ package com.sparta.preonboardingtask.service;
 import com.sparta.preonboardingtask.JwtTokenizer;
 import com.sparta.preonboardingtask.dto.LoginRequestDto;
 import com.sparta.preonboardingtask.dto.LoginResposneDto;
+import com.sparta.preonboardingtask.dto.ProfileResponseDto;
 import com.sparta.preonboardingtask.dto.SignupRequestDto;
 import com.sparta.preonboardingtask.dto.SignupResponseDto;
 import com.sparta.preonboardingtask.entity.RoleEnum;
@@ -49,5 +50,8 @@ public class UsersService {
             throw new CustomException(ErrorCode.INCORRECT_PASSWORD);
         }
         return new LoginResposneDto(jwtTokenizer.createAccessToken(user));
+    }
+    public ProfileResponseDto getProfile(Users user) {
+        return new ProfileResponseDto(user);
     }
 }
