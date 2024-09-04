@@ -7,9 +7,7 @@ spring:
     username: username
     password: password
   config:
-    import: optional:application-secret.yml
-    activate:
-      on-profile: default
+    import: optional:classpath:application-secret.yml
 
   h2:
     console:
