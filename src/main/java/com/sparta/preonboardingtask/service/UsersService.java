@@ -7,6 +7,8 @@ import com.sparta.preonboardingtask.dto.SignupRequestDto;
 import com.sparta.preonboardingtask.dto.SignupResponseDto;
 import com.sparta.preonboardingtask.entity.RoleEnum;
 import com.sparta.preonboardingtask.entity.Users;
+import com.sparta.preonboardingtask.exception.CustomException;
+import com.sparta.preonboardingtask.exception.ErrorCode;
 import com.sparta.preonboardingtask.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,10 +23,10 @@ public class UsersService {
     public SignupResponseDto createUser(SignupRequestDto requestDto) {
         RoleEnum role = RoleEnum.ROLE_USER;
         if(usersRepository.findByUsername(requestDto.getUsername()).isPresent()) {
-            throw new IllegalArgumentException("사용중인 아이디 입니다.");
+            throw new CustomException(ErrorCode.USER_NOT_UNIQUE);
         }
         if(usersRepository.findByNickname(requestDto.getNickname()).isPresent()) {
-            throw new IllegalArgumentException("사용중인 닉네임 입니다.");
+            throw new CustomException(ErrorCode.NAME_NOT_UNIQUE);
         }
         Users user = Users.builder()
             .username(requestDto.getUsername())
@@ -42,9 +44,9 @@ public class UsersService {
         String password = requestDto.getPassword();
 
         Users user = usersRepository.findByUsername(username).orElseThrow(
-            () -> new IllegalArgumentException("아이디를 올바르게 입력했는지 확인하세요."));
+            () -> new CustomException(ErrorCode.CHECK_USERNAME));
         if(!user.getPassword().equals(password)) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new CustomException(ErrorCode.INCORRECT_PASSWORD);
         }
         return new LoginResposneDto(jwtTokenizer.createAccessToken(user));
     }
