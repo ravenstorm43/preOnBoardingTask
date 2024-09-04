@@ -30,6 +30,7 @@ public class UsersService {
             .username(requestDto.getUsername())
             .password(requestDto.getPassword())
             .nickname(requestDto.getNickname())
+            .role(role)
             .build();
         usersRepository.save(user);
 
@@ -42,7 +43,7 @@ public class UsersService {
 
         Users user = usersRepository.findByUsername(username).orElseThrow(
             () -> new IllegalArgumentException("아이디를 올바르게 입력했는지 확인하세요."));
-        if(!user.getPassword().equals(requestDto.getPassword())) {
+        if(!user.getPassword().equals(password)) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
         return new LoginResposneDto(jwtTokenizer.createAccessToken(user));
