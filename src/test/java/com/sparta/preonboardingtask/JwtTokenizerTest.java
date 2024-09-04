@@ -2,6 +2,7 @@ package com.sparta.preonboardingtask;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.sparta.preonboardingtask.entity.RoleEnum;
 import com.sparta.preonboardingtask.entity.Users;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -17,13 +18,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 @TestInstance(Lifecycle.PER_CLASS)
@@ -45,7 +39,7 @@ class JwtTokenizerTest {
         return "Bearer " +
             Jwts.builder()
                 .setSubject(user.getUsername())
-                .claim("admin", user.isAdmin())
+                .claim("auth", user.getRole())
                 .setExpiration(new Date(date.getTime() + 1000L))
                 .setIssuedAt(date)
                 .signWith(key, signatureAlgorithm)
@@ -62,7 +56,7 @@ class JwtTokenizerTest {
             .username("Jin Ho")
             .password("12341234")
             .nickname("Mentos")
-            .admin(false)
+            .role(RoleEnum.ROLE_USER)
             .build();
     }
 

@@ -1,7 +1,11 @@
 package com.sparta.preonboardingtask.entity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Converter;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,13 +30,14 @@ public class Users {
     @Column(nullable = false)
     private String nickname;
 
-    private boolean admin;
-
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private RoleEnum role;
     @Builder
-    public Users(String username, String password, String nickname, boolean admin) {
+    public Users(String username, String password, String nickname, RoleEnum role) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
-        this.admin = admin;
+        this.role = role;
     }
 }

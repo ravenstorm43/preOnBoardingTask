@@ -23,7 +23,7 @@ import org.springframework.util.StringUtils;
 public class JwtTokenizer {
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String REFRESH = "RefreshToken";
-    public static final String AUTHORIZATION_KEY = "admin";
+    public static final String AUTHORIZATION_KEY = "auth";
     public static final String BEARER_PREFIX = "Bearer ";
     private final long ACCESSTOKEN_TIME = 60 * 30 * 1000L;
     private final long REFRESHTOKEN_TIME = 60 * 60 * 1000L * 336;
@@ -46,7 +46,7 @@ public class JwtTokenizer {
         return BEARER_PREFIX +
             Jwts.builder()
                 .setSubject(user.getUsername())
-                .claim(AUTHORIZATION_KEY, user.isAdmin())
+                .claim(AUTHORIZATION_KEY, user.getRole())
                 .setExpiration(new Date(date.getTime() + ACCESSTOKEN_TIME))
                 .setIssuedAt(date)
                 .signWith(key, signatureAlgorithm)
@@ -58,7 +58,7 @@ public class JwtTokenizer {
         return BEARER_PREFIX +
             Jwts.builder()
                 .setSubject(user.getUsername())
-                .claim(AUTHORIZATION_KEY, user.isAdmin())
+                .claim(AUTHORIZATION_KEY, user.getRole())
                 .setExpiration(new Date(date.getTime() + REFRESHTOKEN_TIME))
                 .setIssuedAt(date)
                 .signWith(key, signatureAlgorithm)
