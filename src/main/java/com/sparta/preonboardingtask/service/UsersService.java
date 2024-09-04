@@ -19,9 +19,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UsersService {
     private final UsersRepository usersRepository;
+    private final PasswordEncoder passwordEncoder;
     private final JwtTokenizer jwtTokenizer;
 
     public SignupResponseDto createUser(SignupRequestDto requestDto) {
+        String password = passwordEncoder.encode(requestDto.getPassword());
         RoleEnum role = RoleEnum.ROLE_USER;
         if(usersRepository.findByUsername(requestDto.getUsername()).isPresent()) {
             throw new CustomException(ErrorCode.USER_NOT_UNIQUE);
@@ -31,7 +33,7 @@ public class UsersService {
         }
         Users user = Users.builder()
             .username(requestDto.getUsername())
-            .password(requestDto.getPassword())
+            .password(password)
             .nickname(requestDto.getNickname())
             .role(role)
             .build();
@@ -46,7 +48,7 @@ public class UsersService {
 
         Users user = usersRepository.findByUsername(username).orElseThrow(
             () -> new CustomException(ErrorCode.CHECK_USERNAME));
-        if(!user.getPassword().equals(password)) {
+        if(!passwordEncoder.matches(password, user.getPassword())) {
             throw new CustomException(ErrorCode.INCORRECT_PASSWORD);
         }
         return new LoginResposneDto(jwtTokenizer.createAccessToken(user));
