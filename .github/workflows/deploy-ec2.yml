@@ -52,6 +52,6 @@ jobs:
         echo "${{ secrets.EC2_SSH_KEY }}" > mykeypair.pem
         chmod 600 mykeypair.pem
         scp -i mykeypair.pem -o StrictHostKeyChecking=no build/libs/preOnBoardingTask-0.0.1-SNAPSHOT.jar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USERNAME }}/preOnBoardingTask.jar
-        ssh -i mykeypair.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "pgrep java | xargs kill -9"
+        ssh -i mykeypair.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "kill -9 `pgrep java`"
         ssh -i mykeypair.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "nohup java -jar /home/${{ secrets.EC2_USERNAME }}/preOnBoardingTask.jar > app.log 2>&1 &"
         rm -f mykeypair.pem
