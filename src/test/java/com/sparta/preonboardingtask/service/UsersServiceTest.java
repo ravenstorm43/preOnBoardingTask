@@ -18,7 +18,10 @@ import com.sparta.preonboardingtask.exception.ErrorCode;
 import com.sparta.preonboardingtask.repository.UsersRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Spy;
@@ -28,6 +31,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(MockitoExtension.class)
+@TestMethodOrder(value = MethodOrderer.OrderAnnotation.class)
 class UsersServiceTest {
     private final String testUsername = "testuser";
     private final String testPassword = "password";
@@ -72,12 +76,13 @@ class UsersServiceTest {
 
         this.testUser = Users.builder()
             .username(testUsername)
-            .password(testPassword)
+            .password(passwordEncoder.encode(testPassword))
             .nickname(testNickname)
             .role(RoleEnum.ROLE_USER)
             .build();
     }
     @Test
+    @Order(1)
     void createUser() {
         SignupRequestDto requestDto = createTestSignupRequestDto();
         given(usersRepository.findByUsername(anyString())).willReturn(Optional.empty());
@@ -90,6 +95,7 @@ class UsersServiceTest {
     }
 
     @Test
+    @Order(2)
     void createUserUserNotUniqueExceptionTest() {
         SignupRequestDto requestDto = createTestSignupRequestDto();
         given(usersRepository.findByUsername(anyString())).willReturn(Optional.of(testUser));
@@ -99,6 +105,7 @@ class UsersServiceTest {
     }
 
     @Test
+    @Order(3)
     void createUserNameNotUniqueExceptionTest() {
         SignupRequestDto requestDto = createTestSignupRequestDto();
         given(usersRepository.findByUsername(anyString())).willReturn(Optional.empty());
@@ -109,6 +116,7 @@ class UsersServiceTest {
     }
 
     @Test
+    @Order(4)
     void login() {
         LoginRequestDto requestDto = createTestLoginRequestDto();
         given(usersRepository.findByUsername(anyString())).willReturn(Optional.of(testUser));
@@ -120,6 +128,7 @@ class UsersServiceTest {
     }
 
     @Test
+    @Order(5)
     void loginCheckUsernameExceptionTest() {
         LoginRequestDto requestDto = createTestLoginRequestDto();
         given(usersRepository.findByUsername(anyString())).willReturn(Optional.empty());
@@ -129,6 +138,7 @@ class UsersServiceTest {
     }
 
     @Test
+    @Order(6)
     void loginIncorrectPasswordExceptionTest() {
         LoginRequestDto requestDto = createIncorrectPasswordLoginRequestDto();
         given(usersRepository.findByUsername(anyString())).willReturn(Optional.of(testUser));
@@ -137,6 +147,7 @@ class UsersServiceTest {
         assertEquals(ErrorCode.INCORRECT_PASSWORD.getMessage(), exception.getMessage());
     }
     @Test
+    @Order(7)
     void getProfile() {
         ProfileResponseDto responseDto = usersService.getProfile(testUser);
 
