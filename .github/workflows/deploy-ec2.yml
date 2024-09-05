@@ -45,6 +45,7 @@ jobs:
         
     - name: Deploy to EC2
       run: |
+        echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" | sudo tee -a /home/ubuntu/.env
         echo "${{ secrets.EC2_SSH_KEY }}" > private_key.pem
         chmod 600 private_key.pem
         scp -i private_key.pem -o StrictHostKeyChecking=no build/libs/preOnBoardingTask-0.0.1-SNAPSHOT.jar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USERNAME }}/preOnBoardingTask.jar
