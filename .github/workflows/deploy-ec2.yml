@@ -48,6 +48,7 @@ jobs:
         
     - name: Deploy to EC2
       run: |
+        export JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
         echo "${{ secrets.EC2_SSH_KEY }}" > mykeypair.pem
         chmod 600 mykeypair.pem
         scp -i mykeypair.pem -o StrictHostKeyChecking=no build/libs/preOnBoardingTask-0.0.1-SNAPSHOT.jar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USERNAME }}/preOnBoardingTask.jar
