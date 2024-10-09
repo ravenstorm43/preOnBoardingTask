@@ -67,4 +67,5 @@ jobs:
           
           echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" | sudo tee /home/ubuntu/.env
           sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/preonboardingtask:latest
+          docker images --format "{{.Repository}}:{{.Tag}} {{.ID}}" | grep -v "latest" | awk '{print $2}' | xargs -r sudo docker rmi -f
           sudo docker run -d -p 8080:8080 --name preonboardingtask --env-file /home/ubuntu/.env ${{ secrets.DOCKERHUB_USERNAME }}/preonboardingtask:latest
