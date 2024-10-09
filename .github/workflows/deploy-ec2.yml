@@ -62,8 +62,8 @@ jobs:
         port: ${{ secrets.EC2_SSH_PORT }}
         timeout: 60s
         script: |
-          sudo docker stop preonboardingtask:latest || true
-          sudo docker rm preonboardingtask:latest || true
+          sudo docker stop preonboardingtask || true
+          sudo docker rm preonboardingtask || true
           
           echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" | sudo tee /home/ubuntu/.env
           sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/preonboardingtask:latest
