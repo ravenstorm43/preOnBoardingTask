@@ -45,7 +45,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: DockerHub Push
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/preOnBoardingTask:latest
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/preonboardingtask:latest
 
 
   deploy:
