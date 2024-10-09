@@ -61,7 +61,7 @@ jobs:
         key: ${{ secrets.EC2_SSH_KEY }}
         port: ${{ secrets.EC2_SSH_PORT }}
         timeout: 60s
-        scripts: |
+        script: |
           sudo docker stop preonboardingtask:latest || true
           sudo docker rm preonboardingtask:latest || true
           
